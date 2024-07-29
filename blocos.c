@@ -82,8 +82,8 @@ static nodo_t* init_graph(uint n){
 /*
  * Libera o grafo e inibe leaks
  */
-static void destroy_graph(nodo_t *g, int n){
-    for(int i = 0; i<n; i++)
+static void destroy_graph(nodo_t *g, uint n){
+    for(uint i = 0; i<n; i++)
         while(g[i].adj){
             queue_t *aux = g[i].adj ;
             g[i].adj = g[i].adj->next ;
@@ -111,8 +111,8 @@ static void print_fila(nodo_t* n){
 /*
  * Printa o grafo
  */
-static void print_graph(nodo_t *g, int n){
-    for(int i = 0; i<n; i++){
+static void print_graph(nodo_t *g, uint n){
+    for(uint i = 0; i<n; i++){
         printf("%d\t", g[i].vizinhos) ;
         printf("\e[0;31m[%d]\e[0m", g[i].id) ;
         print_fila(&g[i]) ;
@@ -125,9 +125,7 @@ static void print_graph(nodo_t *g, int n){
 /*
  * Lê o grafo da linha de comando
  */
-static nodo_t* read_graph(void){
-    uint n ;
-    scanf("%d", &n) ;
+static nodo_t* read_graph(uint n){
     nodo_t *g = init_graph(n) ;
     
     uint v, u ;
@@ -146,7 +144,6 @@ static nodo_t* read_graph(void){
         naux_v->vizinhos++ ;
         naux_u->vizinhos++ ;
     }
-    print_graph(g, n) ;
     return g ;
 }
 //##############################################################################
@@ -155,7 +152,11 @@ static nodo_t* read_graph(void){
 
 // IMPLEMENTAÇÃO DA BIBLIOTECA #################################################
 info_t *info_blocos(unsigned int *num_blocos){
-    nodo_t *g = read_graph() ;
+    uint n ;
+    scanf("%u", &n) ;
+    nodo_t *g = read_graph(n) ;
+    print_graph(g, n) ;
+    destroy_graph(g, n) ;
     *num_blocos = 0 ;
     return NULL ;
 }
